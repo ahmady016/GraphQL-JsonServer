@@ -47,13 +47,44 @@ const User = new GraphQLObjectType({
     phone: {type: GraphQLString},
     website: {type: GraphQLString},
     address: {type: Address},
-    company: {type: Company}
+    company: {type: Company},
+    posts: {
+      type: new GraphQLList(Post),
+      resolve(parent, args) {
+        return fetch(`http://localhost:3000/users/${parent.id}/posts`)
+          .then(res => res.json())
+      }
+    }
   })
 })
 
-const RootQuery = new GraphQLObjectType({
+const Post = new GraphQLObjectType({
+  name: "Post",
+  fields: () => ({
+    id: {type: GraphQLString},
+    title: {type: GraphQLString},
+    body: {type: GraphQLString},
+    userId: {type: GraphQLString},
+    user : {
+      type: User,
+      resolve(parent, args) {
+        return fetch(`http://localhost:3000/users/${parent.userId}`)
+          .then(res => res.json())
+      }
+    }
+  })
+})
+
+const query = new GraphQLObjectType({
   name: "RootQuery",
   fields: {
+    users: {
+      type: new GraphQLList(User),
+      resolve(parent, args) {
+        return fetch(`http://localhost:3000/users`)
+          .then(res => res.json())
+      }
+    },
     user: {
       type: User,
       args: { id: { type: GraphQLID }},
@@ -61,10 +92,25 @@ const RootQuery = new GraphQLObjectType({
         return fetch(`http://localhost:3000/users/${args.id}`)
           .then(res => res.json())
       }
+    },
+    posts: {
+      type: new GraphQLList(Post),
+      resolve(parent, args) {
+        return fetch(`http://localhost:3000/posts`)
+          .then(res => res.json())
+      }
+    },
+    post: {
+      type: Post,
+      args: { id: { type: GraphQLID }},
+      resolve(parent, args) {
+        return fetch(`http://localhost:3000/posts/${args.id}`)
+          .then(res => res.json())
+      }
     }
   }
 })
 
 module.exports = new GraphQLSchema({
-  query: RootQuery
+  query
 })
