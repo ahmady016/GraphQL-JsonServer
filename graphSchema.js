@@ -1,12 +1,13 @@
 const fetch = require('node-fetch');
 const {
+  GraphQLSchema,
+  GraphQLObjectType,
   GraphQLID,
   GraphQLInt,
   GraphQLString,
   GraphQLList,
-  GraphQLObjectType,
-  GraphQLNonNull,
-  GraphQLSchema
+  GraphQLBoolean,
+  GraphQLNonNull
 } = require('graphql');
 
 const Geo = new GraphQLObjectType({
@@ -54,6 +55,13 @@ const User = new GraphQLObjectType({
         return fetch(`http://localhost:3000/users/${parent.id}/posts`)
           .then(res => res.json())
       }
+    },
+    todos: {
+      type: new GraphQLList(Todo),
+      resolve(parent, args) {
+        return fetch(`http://localhost:3000/users/${parent.id}/todos`)
+          .then(res => res.json())
+      }
     }
   })
 })
@@ -64,6 +72,23 @@ const Post = new GraphQLObjectType({
     id: {type: GraphQLString},
     title: {type: GraphQLString},
     body: {type: GraphQLString},
+    userId: {type: GraphQLString},
+    user : {
+      type: User,
+      resolve(parent, args) {
+        return fetch(`http://localhost:3000/users/${parent.userId}`)
+          .then(res => res.json())
+      }
+    }
+  })
+})
+
+const Todo = new GraphQLObjectType({
+  name: "Todo",
+  fields: () => ({
+    id: {type: GraphQLString},
+    title: {type: GraphQLString},
+    completed: {type: GraphQLBoolean},
     userId: {type: GraphQLString},
     user : {
       type: User,
@@ -105,6 +130,21 @@ const query = new GraphQLObjectType({
       args: { id: { type: GraphQLID }},
       resolve(parent, args) {
         return fetch(`http://localhost:3000/posts/${args.id}`)
+          .then(res => res.json())
+      }
+    },
+    todos: {
+      type: new GraphQLList(Todo),
+      resolve(parent, args) {
+        return fetch(`http://localhost:3000/todos`)
+          .then(res => res.json())
+      }
+    },
+    todo: {
+      type: Todo,
+      args: { id: { type: GraphQLID }},
+      resolve(parent, args) {
+        return fetch(`http://localhost:3000/todos/${args.id}`)
           .then(res => res.json())
       }
     }
