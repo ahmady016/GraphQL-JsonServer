@@ -6,14 +6,14 @@ const schema = require('./graphSchema');
 const app = express();
 const PORT = process.env.PORT || 2018;
 
+app.listen(PORT, () => {
+  console.log(`server running at port ${PORT}`);
+});
+
 app.use('/graphql', graphQLRoute({
   schema,
   graphiql: true
 }));
-
-app.listen(PORT, () => {
-  console.log(`server running at port ${PORT}`);
-});
 
 app.get('/:resource', (req, res) => {
   fetch(`http://localhost:3000/${req.params.resource}`)

@@ -268,6 +268,28 @@ const query = new GraphQLObjectType({
   }
 })
 
+const mutation = new GraphQLObjectType({
+  name: "mutation",
+  fields: {
+    addTodo: {
+      type: Todo,
+      args: {
+        userId: {type: GraphQLInt},
+        title: {type: GraphQLString},
+        completed: {type: GraphQLBoolean}
+      },
+      resolve(parent, args) {
+        return fetch(`http://localhost:3000/todos`, {
+          method: "POST",
+          body: JSON.stringify({...args}),
+          headers:{'Content-Type': 'application/json'}
+        }).then(res => res.json())
+      }
+    }
+  }
+})
+
 module.exports = new GraphQLSchema({
-  query
+  query,
+  mutation
 })
