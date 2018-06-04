@@ -62,6 +62,13 @@ const User = new GraphQLObjectType({
         return fetch(`http://localhost:3000/users/${parent.id}/todos`)
           .then(res => res.json())
       }
+    },
+    albums: {
+      type: new GraphQLList(Album),
+      resolve(parent, args) {
+        return fetch(`http://localhost:3000/users/${parent.id}/albums`)
+          .then(res => res.json())
+      }
     }
   })
 })
@@ -89,6 +96,22 @@ const Todo = new GraphQLObjectType({
     id: {type: GraphQLString},
     title: {type: GraphQLString},
     completed: {type: GraphQLBoolean},
+    userId: {type: GraphQLString},
+    user : {
+      type: User,
+      resolve(parent, args) {
+        return fetch(`http://localhost:3000/users/${parent.userId}`)
+          .then(res => res.json())
+      }
+    }
+  })
+})
+
+const Album = new GraphQLObjectType({
+  name: "Album",
+  fields: () => ({
+    id: {type: GraphQLString},
+    title: {type: GraphQLString},
     userId: {type: GraphQLString},
     user : {
       type: User,
@@ -147,7 +170,24 @@ const query = new GraphQLObjectType({
         return fetch(`http://localhost:3000/todos/${args.id}`)
           .then(res => res.json())
       }
-    }
+    },
+    albums: {
+      type: new GraphQLList(Album),
+      args: { id: { type: GraphQLID }},
+      resolve(parent, args) {
+        return fetch(`http://localhost:3000/albums`)
+          .then(res => res.json())
+      }
+    },
+    album: {
+      type: Album,
+      args: { id: { type: GraphQLID }},
+      resolve(parent, args) {
+        return fetch(`http://localhost:3000/albums/${args.id}`)
+          .then(res => res.json())
+      }
+    },
+
   }
 })
 
