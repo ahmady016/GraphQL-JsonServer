@@ -280,10 +280,38 @@ const mutation = new GraphQLObjectType({
       },
       resolve(parent, args) {
         return fetch(`http://localhost:3000/todos`, {
-          method: "POST",
-          body: JSON.stringify({...args}),
-          headers:{'Content-Type': 'application/json'}
-        }).then(res => res.json())
+                  method: "POST",
+                  body: JSON.stringify({...args}),
+                  headers:{'Content-Type': 'application/json'}
+                }).then(res => res.json())
+      }
+    },
+    updateTodo: {
+      type: Todo,
+      args: {
+        id: {type: GraphQLInt},
+        userId: {type: GraphQLInt},
+        title: {type: GraphQLString},
+        completed: {type: GraphQLBoolean}
+      },
+      resolve(parent, args) {
+        return fetch(`http://localhost:3000/todos/${args.id}`, {
+                  method: "PATCH",
+                  body: JSON.stringify({...args}),
+                  headers:{'Content-Type': 'application/json'}
+                }).then(res => res.json())
+      }
+    },
+    deleteTodo: {
+      type: Todo,
+      args: {
+        id: {type: GraphQLInt}
+      },
+      resolve(parent, args) {
+        return fetch(`http://localhost:3000/todos/${args.id}`, {
+                  method: "DELETE",
+                  headers:{'Content-Type': 'application/json'}
+                }).then(res => res.json())
       }
     }
   }
