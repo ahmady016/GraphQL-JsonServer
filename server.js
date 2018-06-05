@@ -2,6 +2,7 @@ const express = require('express');
 const fetch = require('node-fetch');
 const graphQLRoute = require('express-graphql');
 const schema = require('./graphSchema');
+const env = require('./env');
 
 const app = express();
 const PORT = process.env.PORT || 2018;
@@ -16,7 +17,7 @@ app.use('/graphql', graphQLRoute({
 }));
 
 app.get('/:resource', (req, res) => {
-  fetch(`http://localhost:3000/${req.params.resource}`)
+  fetch(`${env.baseURL}/${req.params.resource}`)
     .then(res => res.json())
     .then(data => res.send(data));
 });
