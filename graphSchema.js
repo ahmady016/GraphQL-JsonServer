@@ -357,6 +357,48 @@ const mutation = new GraphQLObjectType({
                 }).then(res => res.json())
       }
     },
+    addComment: {
+      type: Comment,
+      args: {
+        email: {type: GraphQLString},
+        body: {type: GraphQLString},
+        postId: {type: GraphQLInt},
+      },
+      resolve(parent, args) {
+        return fetch(`${env.baseURL}/comments`, {
+                  method: "POST",
+                  body: JSON.stringify({...args}),
+                  headers:{'Content-Type': 'application/json'}
+                }).then(res => res.json())
+      }
+    },
+    updateComment: {
+      type: Post,
+      args: {
+        email: {type: GraphQLString},
+        body: {type: GraphQLString},
+        postId: {type: GraphQLInt},
+      },
+      resolve(parent, args) {
+        return fetch(`${env.baseURL}/comments`, {
+                  method: "PATCH",
+                  body: JSON.stringify({...args}),
+                  headers:{'Content-Type': 'application/json'}
+                }).then(res => res.json())
+      }
+    },
+    deleteComment: {
+      type: Post,
+      args: {
+        id: {type: GraphQLInt}
+      },
+      resolve(parent, args) {
+        return fetch(`${env.baseURL}/comments/${args.id}`, {
+                  method: "DELETE",
+                  headers:{'Content-Type': 'application/json'}
+                }).then(res => res.json())
+      }
+    },
   }
 })
 
