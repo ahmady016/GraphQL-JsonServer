@@ -42,7 +42,7 @@ const Company = new GraphQLObjectType({
 const User = new GraphQLObjectType({
   name: "User",
   fields: () => ({
-    id: {type: GraphQLString},
+    id: {type: GraphQLInt},
     name: {type: GraphQLString},
     username: {type: GraphQLString},
     email: {type: GraphQLString},
@@ -77,10 +77,10 @@ const User = new GraphQLObjectType({
 const Post = new GraphQLObjectType({
   name: "Post",
   fields: () => ({
-    id: {type: GraphQLString},
+    id: {type: GraphQLInt},
     title: {type: GraphQLString},
     body: {type: GraphQLString},
-    userId: {type: GraphQLString},
+    userId: {type: GraphQLInt},
     user : {
       type: User,
       resolve(parent, args) {
@@ -101,10 +101,10 @@ const Post = new GraphQLObjectType({
 const Comment = new GraphQLObjectType({
   name: "Comment",
   fields: () => ({
-    id: {type: GraphQLString},
+    id: {type: GraphQLInt},
     email: {type: GraphQLString},
     body: {type: GraphQLString},
-    postId: {type: GraphQLString},
+    postId: {type: GraphQLInt},
     post : {
       type: Post,
       resolve(parent, args) {
@@ -118,7 +118,7 @@ const Comment = new GraphQLObjectType({
 const Album = new GraphQLObjectType({
   name: "Album",
   fields: () => ({
-    id: {type: GraphQLString},
+    id: {type: GraphQLInt},
     title: {type: GraphQLString},
     userId: {type: GraphQLString},
     user : {
@@ -141,11 +141,11 @@ const Album = new GraphQLObjectType({
 const Photo = new GraphQLObjectType({
   name: "Photo",
   fields: () => ({
-    id: {type: GraphQLString},
+    id: {type: GraphQLInt},
     title: {type: GraphQLString},
     url: {type: GraphQLString},
     thumbnailUrl: {type: GraphQLString},
-    albumId: {type: GraphQLString},
+    albumId: {type: GraphQLInt},
     album : {
       type: Album,
       resolve(parent, args) {
@@ -159,10 +159,10 @@ const Photo = new GraphQLObjectType({
 const Todo = new GraphQLObjectType({
   name: "Todo",
   fields: () => ({
-    id: {type: GraphQLString},
+    id: {type: GraphQLInt},
     title: {type: GraphQLString},
     completed: {type: GraphQLBoolean},
-    userId: {type: GraphQLString},
+    userId: {type: GraphQLInt},
     user : {
       type: User,
       resolve(parent, args) {
@@ -314,7 +314,49 @@ const mutation = new GraphQLObjectType({
                   headers:{'Content-Type': 'application/json'}
                 }).then(res => res.json())
       }
-    }
+    },
+    addPost: {
+      type: Post,
+      args: {
+        title: {type: GraphQLString},
+        body: {type: GraphQLString},
+        userId: {type: GraphQLInt}
+      },
+      resolve(parent, args) {
+        return fetch(`${env.baseURL}/posts`, {
+                  method: "POST",
+                  body: JSON.stringify({...args}),
+                  headers:{'Content-Type': 'application/json'}
+                }).then(res => res.json())
+      }
+    },
+    updatePost: {
+      type: Post,
+      args: {
+        title: {type: GraphQLString},
+        body: {type: GraphQLString},
+        userId: {type: GraphQLInt}
+      },
+      resolve(parent, args) {
+        return fetch(`${env.baseURL}/posts`, {
+                  method: "PATCH",
+                  body: JSON.stringify({...args}),
+                  headers:{'Content-Type': 'application/json'}
+                }).then(res => res.json())
+      }
+    },
+    deletePost: {
+      type: Post,
+      args: {
+        id: {type: GraphQLInt}
+      },
+      resolve(parent, args) {
+        return fetch(`${env.baseURL}/posts/${args.id}`, {
+                  method: "DELETE",
+                  headers:{'Content-Type': 'application/json'}
+                }).then(res => res.json())
+      }
+    },
   }
 })
 

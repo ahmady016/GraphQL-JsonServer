@@ -831,6 +831,18 @@
       "id": 100,
       "title": "at nam consequatur ea labore ea harum",
       "body": "cupiditate quo est a modi nesciunt soluta\nipsa voluptas error itaque dicta in\nautem qui minus magnam et distinctio eum\naccusamus ratione error aut"
+    },
+    {
+      "title": "Deep Learning in Production with Skymind and Workday NodeJS",
+      "body": "Videos of the deep learning meetup I co-organized back in August at our San Francisco office are now available. This is part 1 of a series of two videos.",
+      "userId": 1,
+      "id": 101
+    },
+    {
+      "title": "Deep Learning in NodeJS",
+      "body": "Hi noders! If you are in the bay area and want to learn about deep learning in production, this August 10th free event might be of interest to you.",
+      "userId": 1,
+      "id": 102
     }
   ],
   "comments": [
