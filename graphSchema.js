@@ -120,7 +120,7 @@ const Album = new GraphQLObjectType({
   fields: () => ({
     id: {type: GraphQLInt},
     title: {type: GraphQLString},
-    userId: {type: GraphQLString},
+    userId: {type: GraphQLInt},
     user : {
       type: User,
       resolve(parent, args) {
@@ -338,7 +338,7 @@ const mutation = new GraphQLObjectType({
         userId: {type: GraphQLInt}
       },
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/posts`, {
+        return fetch(`${env.baseURL}/posts/${args.id}`, {
                   method: "PATCH",
                   body: JSON.stringify({...args}),
                   headers:{'Content-Type': 'application/json'}
@@ -380,7 +380,7 @@ const mutation = new GraphQLObjectType({
         postId: {type: GraphQLInt},
       },
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/comments`, {
+        return fetch(`${env.baseURL}/comments/${args.id}`, {
                   method: "PATCH",
                   body: JSON.stringify({...args}),
                   headers:{'Content-Type': 'application/json'}
@@ -394,6 +394,48 @@ const mutation = new GraphQLObjectType({
       },
       resolve(parent, args) {
         return fetch(`${env.baseURL}/comments/${args.id}`, {
+                  method: "DELETE",
+                  headers:{'Content-Type': 'application/json'}
+                }).then(res => res.json())
+      }
+    },
+    addAlbum: {
+      type: Album,
+      args: {
+        id: {type: GraphQLInt},
+        title: {type: GraphQLString},
+        userId: {type: GraphQLInt}
+      },
+      resolve(parent, args) {
+        return fetch(`${env.baseURL}/albums`, {
+                  method: "POST",
+                  body: JSON.stringify({...args}),
+                  headers:{'Content-Type': 'application/json'}
+                }).then(res => res.json())
+      }
+    },
+    updateAlbum: {
+      type: Album,
+      args: {
+        id: {type: GraphQLInt},
+        title: {type: GraphQLString},
+        userId: {type: GraphQLInt}
+      },
+      resolve(parent, args) {
+        return fetch(`${env.baseURL}/albums/${args.id}`, {
+                  method: "PATCH",
+                  body: JSON.stringify({...args}),
+                  headers:{'Content-Type': 'application/json'}
+                }).then(res => res.json())
+      }
+    },
+    deleteAlbum: {
+      type: Album,
+      args: {
+        id: {type: GraphQLInt}
+      },
+      resolve(parent, args) {
+        return fetch(`${env.baseURL}/albums/${args.id}`, {
                   method: "DELETE",
                   headers:{'Content-Type': 'application/json'}
                 }).then(res => res.json())

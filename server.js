@@ -11,13 +11,18 @@ app.listen(PORT, () => {
   console.log(`server running at port ${PORT}`);
 });
 
+app.use(express.static('static'));
+
 app.use('/graphql', graphQLRoute({
   schema,
   graphiql: true
 }));
 
 app.get('/:resource', (req, res) => {
-  fetch(`${env.baseURL}/${req.params.resource}`)
-    .then(res => res.json())
-    .then(data => res.send(data));
+  const resource = req.params.resource;
+  if(env.resources.includes(resource)) {
+    fetch(`${env.baseURL}/${resource}`)
+      .then(res => res.json())
+      .then(data => res.send(data));
+  }
 });
