@@ -8,7 +8,7 @@ const app = express();
 const PORT = process.env.PORT || env.PORT;
 
 app.listen(PORT, () => {
-  console.log(`server running at port ${PORT}`);
+  console.log(`server running at port ${PORT} at ${new Date()}`);
 });
 
 app.use(express.static('static'));

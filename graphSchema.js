@@ -3,6 +3,7 @@ const env = require('./env')
 const {
   GraphQLSchema,
   GraphQLObjectType,
+  GraphQLInputObjectType,
   GraphQLID,
   GraphQLInt,
   GraphQLString,
@@ -10,6 +11,34 @@ const {
   GraphQLBoolean,
   GraphQLNonNull
 } = require('graphql')
+
+const GeoInput = new GraphQLInputObjectType({
+  name: "GeoInput",
+  fields: () => ({
+    lat: {type: GraphQLString},
+    lng: {type: GraphQLString}
+  })
+})
+
+const AddressInput = new GraphQLInputObjectType({
+  name: "AddressInput",
+  fields: () => ({
+    street: {type: GraphQLString},
+    suite: {type: GraphQLString},
+    city: {type: GraphQLString},
+    zipcode: {type: GraphQLString},
+    geo: {type: GeoInput}
+  })
+})
+
+const CompanyInput = new GraphQLInputObjectType({
+  name: "CompanyInput",
+  fields: () => ({
+    name: {type: GraphQLString},
+    catchPhrase: {type: GraphQLString},
+    bs: {type: GraphQLString}
+  })
+})
 
 const Geo = new GraphQLObjectType({
   name: "Geo",
@@ -333,6 +362,7 @@ const mutation = new GraphQLObjectType({
     updatePost: {
       type: Post,
       args: {
+        id: {type: GraphQLInt},
         title: {type: GraphQLString},
         body: {type: GraphQLString},
         userId: {type: GraphQLInt}
@@ -375,6 +405,7 @@ const mutation = new GraphQLObjectType({
     updateComment: {
       type: Post,
       args: {
+        id: {type: GraphQLInt},
         email: {type: GraphQLString},
         body: {type: GraphQLString},
         postId: {type: GraphQLInt},
@@ -460,6 +491,7 @@ const mutation = new GraphQLObjectType({
     updatePhoto: {
       type: Photo,
       args: {
+        id: {type: GraphQLInt},
         title: {type: GraphQLString},
         url: {type: GraphQLString},
         thumbnailUrl: {type: GraphQLString},
@@ -485,6 +517,57 @@ const mutation = new GraphQLObjectType({
                 }).then(res => res.json())
       }
     },
+    addUser: {
+      type: User,
+      args: {
+        name: {type: GraphQLString},
+        username: {type: GraphQLString},
+        email: {type: GraphQLString},
+        phone: {type: GraphQLString},
+        website: {type: GraphQLString},
+        address: {type: AddressInput},
+        company: {type: CompanyInput},
+      },
+      resolve(parent, args) {
+        return fetch(`${env.dbURL}/users`, {
+                  method: "POST",
+                  body: JSON.stringify({...args}),
+                  headers:{'Content-Type': 'application/json'}
+                }).then(res => res.json())
+      }
+    },
+    updateUser: {
+      type: User,
+      args: {
+        id: {type: GraphQLInt},
+        name: {type: GraphQLString},
+        username: {type: GraphQLString},
+        email: {type: GraphQLString},
+        phone: {type: GraphQLString},
+        website: {type: GraphQLString},
+        address: {type: AddressInput},
+        company: {type: CompanyInput},
+      },
+      resolve(parent, args) {
+        return fetch(`${env.dbURL}/users/${args.id}`, {
+                  method: "PATCH",
+                  body: JSON.stringify({...args}),
+                  headers:{'Content-Type': 'application/json'}
+                }).then(res => res.json())
+      }
+    },
+    deleteUser: {
+      type: User,
+      args: {
+        id: {type: GraphQLInt}
+      },
+      resolve(parent, args) {
+        return fetch(`${env.dbURL}/users/${args.id}`, {
+                  method: "DELETE",
+                  headers:{'Content-Type': 'application/json'}
+                }).then(res => res.json())
+      }
+    }
   }
 })
 

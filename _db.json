@@ -229,6 +229,29 @@
         "catchPhrase": "Centralized empowering task-force",
         "bs": "target end-to-end models"
       }
+    },
+    {
+      "name": "Ahmad Hamdy",
+      "username": "Ahmady09",
+      "email": "Ahmady09@gmail.com",
+      "phone": "0822166721",
+      "website": "benisuef.gov.eg",
+      "address": {
+        "street": "Ibrahiem Agamy St.",
+        "suite": "Salah Salem",
+        "city": "benisuef",
+        "zipcode": "55555-333",
+        "geo": {
+          "lat": "29.3159",
+          "lng": "27.1496"
+        }
+      },
+      "company": {
+        "name": "ITC-BNS",
+        "catchPhrase": "Computer Training Center",
+        "bs": "Learn Computer Skills"
+      },
+      "id": 11
     }
   ],
   "posts": [
