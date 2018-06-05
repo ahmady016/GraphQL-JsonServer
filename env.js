@@ -1,5 +1,6 @@
 module.exports = {
-  baseURL: 'http://localhost:3000',
+  dbURL: 'http://localhost:3000',
+  PORT: 2018,
   resources: [
     "users",
     "posts",

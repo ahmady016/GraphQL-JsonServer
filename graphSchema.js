@@ -53,21 +53,21 @@ const User = new GraphQLObjectType({
     posts: {
       type: new GraphQLList(Post),
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/users/${parent.id}/posts`)
+        return fetch(`${env.dbURL}/users/${parent.id}/posts`)
           .then(res => res.json())
       }
     },
     todos: {
       type: new GraphQLList(Todo),
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/users/${parent.id}/todos`)
+        return fetch(`${env.dbURL}/users/${parent.id}/todos`)
           .then(res => res.json())
       }
     },
     albums: {
       type: new GraphQLList(Album),
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/users/${parent.id}/albums`)
+        return fetch(`${env.dbURL}/users/${parent.id}/albums`)
           .then(res => res.json())
       }
     }
@@ -84,14 +84,14 @@ const Post = new GraphQLObjectType({
     user : {
       type: User,
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/users/${parent.userId}`)
+        return fetch(`${env.dbURL}/users/${parent.userId}`)
           .then(res => res.json())
       }
     },
     comments: {
       type: new GraphQLList(Comment),
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/posts/${parent.id}/comments`)
+        return fetch(`${env.dbURL}/posts/${parent.id}/comments`)
           .then(res => res.json())
       }
     }
@@ -108,7 +108,7 @@ const Comment = new GraphQLObjectType({
     post : {
       type: Post,
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/posts/${parent.postId}`)
+        return fetch(`${env.dbURL}/posts/${parent.postId}`)
           .then(res => res.json())
       }
     }
@@ -124,14 +124,14 @@ const Album = new GraphQLObjectType({
     user : {
       type: User,
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/users/${parent.userId}`)
+        return fetch(`${env.dbURL}/users/${parent.userId}`)
           .then(res => res.json())
       }
     },
     photos: {
       type: new GraphQLList(Photo),
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/albums/${parent.id}/photos`)
+        return fetch(`${env.dbURL}/albums/${parent.id}/photos`)
           .then(res => res.json())
       }
     }
@@ -149,7 +149,7 @@ const Photo = new GraphQLObjectType({
     album : {
       type: Album,
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/albums/${parent.albumId}`)
+        return fetch(`${env.dbURL}/albums/${parent.albumId}`)
           .then(res => res.json())
       }
     }
@@ -166,7 +166,7 @@ const Todo = new GraphQLObjectType({
     user : {
       type: User,
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/users/${parent.userId}`)
+        return fetch(`${env.dbURL}/users/${parent.userId}`)
           .then(res => res.json())
       }
     }
@@ -179,7 +179,7 @@ const query = new GraphQLObjectType({
     users: {
       type: new GraphQLList(User),
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/users`)
+        return fetch(`${env.dbURL}/users`)
           .then(res => res.json())
       }
     },
@@ -187,14 +187,14 @@ const query = new GraphQLObjectType({
       type: User,
       args: { id: { type: GraphQLID }},
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/users/${args.id}`)
+        return fetch(`${env.dbURL}/users/${args.id}`)
           .then(res => res.json())
       }
     },
     posts: {
       type: new GraphQLList(Post),
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/posts`)
+        return fetch(`${env.dbURL}/posts`)
           .then(res => res.json())
       }
     },
@@ -202,14 +202,14 @@ const query = new GraphQLObjectType({
       type: Post,
       args: { id: { type: GraphQLID }},
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/posts/${args.id}`)
+        return fetch(`${env.dbURL}/posts/${args.id}`)
           .then(res => res.json())
       }
     },
     comments: {
       type: new GraphQLList(Comment),
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/comments`)
+        return fetch(`${env.dbURL}/comments`)
           .then(res => res.json())
       }
     },
@@ -217,14 +217,14 @@ const query = new GraphQLObjectType({
       type: Comment,
       args: { id: { type: GraphQLID }},
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/comments/${args.id}`)
+        return fetch(`${env.dbURL}/comments/${args.id}`)
           .then(res => res.json())
       }
     },
     todos: {
       type: new GraphQLList(Todo),
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/todos`)
+        return fetch(`${env.dbURL}/todos`)
           .then(res => res.json())
       }
     },
@@ -232,14 +232,14 @@ const query = new GraphQLObjectType({
       type: Todo,
       args: { id: { type: GraphQLID }},
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/todos/${args.id}`)
+        return fetch(`${env.dbURL}/todos/${args.id}`)
           .then(res => res.json())
       }
     },
     albums: {
       type: new GraphQLList(Album),
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/albums`)
+        return fetch(`${env.dbURL}/albums`)
           .then(res => res.json())
       }
     },
@@ -247,14 +247,14 @@ const query = new GraphQLObjectType({
       type: Album,
       args: { id: { type: GraphQLID }},
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/albums/${args.id}`)
+        return fetch(`${env.dbURL}/albums/${args.id}`)
           .then(res => res.json())
       }
     },
     photos: {
       type: new GraphQLList(Photo),
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/photos`)
+        return fetch(`${env.dbURL}/photos`)
           .then(res => res.json())
       }
     },
@@ -262,7 +262,7 @@ const query = new GraphQLObjectType({
       type: Photo,
       args: { id: { type: GraphQLID }},
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/photos/${args.id}`)
+        return fetch(`${env.dbURL}/photos/${args.id}`)
           .then(res => res.json())
       }
     },
@@ -280,7 +280,7 @@ const mutation = new GraphQLObjectType({
         completed: {type: GraphQLBoolean}
       },
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/todos`, {
+        return fetch(`${env.dbURL}/todos`, {
                   method: "POST",
                   body: JSON.stringify({...args}),
                   headers:{'Content-Type': 'application/json'}
@@ -296,7 +296,7 @@ const mutation = new GraphQLObjectType({
         completed: {type: GraphQLBoolean}
       },
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/todos/${args.id}`, {
+        return fetch(`${env.dbURL}/todos/${args.id}`, {
                   method: "PATCH",
                   body: JSON.stringify({...args}),
                   headers:{'Content-Type': 'application/json'}
@@ -309,7 +309,7 @@ const mutation = new GraphQLObjectType({
         id: {type: GraphQLInt}
       },
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/todos/${args.id}`, {
+        return fetch(`${env.dbURL}/todos/${args.id}`, {
                   method: "DELETE",
                   headers:{'Content-Type': 'application/json'}
                 }).then(res => res.json())
@@ -323,7 +323,7 @@ const mutation = new GraphQLObjectType({
         userId: {type: GraphQLInt}
       },
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/posts`, {
+        return fetch(`${env.dbURL}/posts`, {
                   method: "POST",
                   body: JSON.stringify({...args}),
                   headers:{'Content-Type': 'application/json'}
@@ -338,7 +338,7 @@ const mutation = new GraphQLObjectType({
         userId: {type: GraphQLInt}
       },
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/posts/${args.id}`, {
+        return fetch(`${env.dbURL}/posts/${args.id}`, {
                   method: "PATCH",
                   body: JSON.stringify({...args}),
                   headers:{'Content-Type': 'application/json'}
@@ -351,7 +351,7 @@ const mutation = new GraphQLObjectType({
         id: {type: GraphQLInt}
       },
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/posts/${args.id}`, {
+        return fetch(`${env.dbURL}/posts/${args.id}`, {
                   method: "DELETE",
                   headers:{'Content-Type': 'application/json'}
                 }).then(res => res.json())
@@ -365,7 +365,7 @@ const mutation = new GraphQLObjectType({
         postId: {type: GraphQLInt},
       },
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/comments`, {
+        return fetch(`${env.dbURL}/comments`, {
                   method: "POST",
                   body: JSON.stringify({...args}),
                   headers:{'Content-Type': 'application/json'}
@@ -380,7 +380,7 @@ const mutation = new GraphQLObjectType({
         postId: {type: GraphQLInt},
       },
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/comments/${args.id}`, {
+        return fetch(`${env.dbURL}/comments/${args.id}`, {
                   method: "PATCH",
                   body: JSON.stringify({...args}),
                   headers:{'Content-Type': 'application/json'}
@@ -393,7 +393,7 @@ const mutation = new GraphQLObjectType({
         id: {type: GraphQLInt}
       },
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/comments/${args.id}`, {
+        return fetch(`${env.dbURL}/comments/${args.id}`, {
                   method: "DELETE",
                   headers:{'Content-Type': 'application/json'}
                 }).then(res => res.json())
@@ -407,7 +407,7 @@ const mutation = new GraphQLObjectType({
         userId: {type: GraphQLInt}
       },
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/albums`, {
+        return fetch(`${env.dbURL}/albums`, {
                   method: "POST",
                   body: JSON.stringify({...args}),
                   headers:{'Content-Type': 'application/json'}
@@ -422,7 +422,7 @@ const mutation = new GraphQLObjectType({
         userId: {type: GraphQLInt}
       },
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/albums/${args.id}`, {
+        return fetch(`${env.dbURL}/albums/${args.id}`, {
                   method: "PATCH",
                   body: JSON.stringify({...args}),
                   headers:{'Content-Type': 'application/json'}
@@ -435,7 +435,51 @@ const mutation = new GraphQLObjectType({
         id: {type: GraphQLInt}
       },
       resolve(parent, args) {
-        return fetch(`${env.baseURL}/albums/${args.id}`, {
+        return fetch(`${env.dbURL}/albums/${args.id}`, {
+                  method: "DELETE",
+                  headers:{'Content-Type': 'application/json'}
+                }).then(res => res.json())
+      }
+    },
+    addPhoto: {
+      type: Photo,
+      args: {
+        title: {type: GraphQLString},
+        url: {type: GraphQLString},
+        thumbnailUrl: {type: GraphQLString},
+        albumId: {type: GraphQLInt}
+      },
+      resolve(parent, args) {
+        return fetch(`${env.dbURL}/photos`, {
+                  method: "POST",
+                  body: JSON.stringify({...args}),
+                  headers:{'Content-Type': 'application/json'}
+                }).then(res => res.json())
+      }
+    },
+    updatePhoto: {
+      type: Photo,
+      args: {
+        title: {type: GraphQLString},
+        url: {type: GraphQLString},
+        thumbnailUrl: {type: GraphQLString},
+        albumId: {type: GraphQLInt}
+      },
+      resolve(parent, args) {
+        return fetch(`${env.dbURL}/photos/${args.id}`, {
+                  method: "PATCH",
+                  body: JSON.stringify({...args}),
+                  headers:{'Content-Type': 'application/json'}
+                }).then(res => res.json())
+      }
+    },
+    deletePhoto: {
+      type: Photo,
+      args: {
+        id: {type: GraphQLInt}
+      },
+      resolve(parent, args) {
+        return fetch(`${env.dbURL}/photos/${args.id}`, {
                   method: "DELETE",
                   headers:{'Content-Type': 'application/json'}
                 }).then(res => res.json())

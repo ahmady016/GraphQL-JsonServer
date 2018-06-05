@@ -5,7 +5,7 @@ const schema = require('./graphSchema');
 const env = require('./env');
 
 const app = express();
-const PORT = process.env.PORT || 2018;
+const PORT = process.env.PORT || env.PORT;
 
 app.listen(PORT, () => {
   console.log(`server running at port ${PORT}`);
